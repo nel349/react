@@ -19,6 +19,26 @@ const list = [
   }
 ];
 
+function List() {
+  return (
+    <ul>
+    {
+      list.map(item => addFromItem(item))
+    }
+    </ul>
+  );
+}
+
+function Search() {
+  return (
+    <div>
+      <label htmlFor="search">Search: </label>
+      <input id="search" type="text" />
+    </div>);
+}
+
+
+
 function addFromItem(item) {
   return (
     <li key={item.objectID}>
@@ -36,16 +56,12 @@ function App() {
   return (
     <div>
       <h1>My Hacker Stories</h1>
-      <label htmlFor="search">Search: </label>
-      <input id="search" type="text" />
+      <Search />
 
       <hr />
 
-      <ul>
-        {
-          list.map(item => addFromItem(item))
-        }
-      </ul>
+      <List />
+      
 
     </div>
   );
