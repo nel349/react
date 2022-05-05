@@ -1,6 +1,8 @@
 import * as React from 'react';
 
 const List = (props) => {
+
+  console.log('List renders')
   return (
     <ul>
     {
@@ -10,19 +12,24 @@ const List = (props) => {
   );
 }
 
-const Search = () => {
+const Search = (props) => {
+  console.log('Search renders');
 
+  const [searchTerm, setSearchTerm] = React.useState('');   
+  
   const handleChange = (event) => {
-    // synthetic event
-    console.log(event);
-    // value of target (here: element)
-    console.log(event.target.value);
-};
+    setSearchTerm(event.target.value);
+
+    props.onSearch(event);
+  };
 
   return (
     <div>
       <label htmlFor="search">Search: </label>
       <input id="search" type="text" onChange={handleChange}/>
+      <p>
+        Searching for <strong>{searchTerm}</strong>.
+      </p>
     </div>);
 }
 
@@ -40,6 +47,14 @@ const Item = (props) => (
   );
 
 const App = () => {
+
+  console.log('App renders')
+
+  const handleSearch = (event) => {
+    // D
+      console.log("handleSearch: " + event.target.value);
+  };
+
   const stories = [
     {
       title: 'React',
@@ -62,7 +77,7 @@ const App = () => {
   return (
     <div>
       <h1>My Hacker Stories</h1>
-      <Search />
+      <Search onSearch={handleSearch}/>
 
       <hr />
 
