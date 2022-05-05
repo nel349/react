@@ -19,7 +19,7 @@ const list = [
   }
 ];
 
-function List() {
+const List = () => {
   return (
     <ul>
     {
@@ -29,7 +29,7 @@ function List() {
   );
 }
 
-function Search() {
+const Search = () => {
   return (
     <div>
       <label htmlFor="search">Search: </label>
@@ -52,7 +52,7 @@ function addFromItem(item) {
   );
 }
 
-function App() {
+const App = () => {
   return (
     <div>
       <h1>My Hacker Stories</h1>
