@@ -1,40 +1,51 @@
 import * as React from 'react';
 
-const List = (props) => {
+const List = ( {list} ) => {
 
   console.log('List renders')
   return (
     <ul>
-    {
-      props.list.map(item => (<Item key={item.objectID} item={item}/>))
-    }
+      {list.map(
+          ({ objectID, ...all }) => (
+            <Item key={objectID} {...all} />
+          )
+        )
+      }
     </ul>
   );
 }
 
-const Search = (props) => {
+const Search = ({ searchTerm, onSearch }) => {
   console.log('Search renders');
 
   return (
     <div>
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={props.onSearch}/>
+      <input id="search" type="text" value={searchTerm} onChange={onSearch} />
       <p>
-        Searching for <strong>{props.text}</strong>.
+        Searching for <strong>{searchTerm}</strong>.
       </p>
-    </div>);
+    </div>
+  );
 }
 
-const Item = (props) => (
-    <li key={props.item.objectID}>
-      <span>
-        <a href={props.item.url}>{props.item.title}</a>
-      </span>
-      <span>{props.item.author}</span>
-      <span>{props.item.num_comments}</span>
-      <span>{props.item.points}</span>
-    </li>
-  );
+const Item = ({
+      title,
+      url,
+      author,
+      num_comments,
+      points,
+      objectID
+    }) => (
+  <li key={objectID}>
+    <span>
+      <a href={url}>{title}</a>
+    </span>
+    <span>{author}</span>
+    <span>{num_comments}</span>
+    <span>{points}</span>
+  </li>
+);
 
 const App = () => {
 
@@ -57,29 +68,29 @@ const App = () => {
     }
   ];
 
-  const [searchTerm, setSearchTerm] = React.useState('');   
+  const [searchTerm, setSearchTerm] = React.useState('');
 
   console.log('App renders')
 
   const handleSearch = (event) => {
-      setSearchTerm(event.target.value);
+    setSearchTerm(event.target.value);
   };
 
   const searchedStories = stories.filter((story) => {
-      return story.title.toLowerCase().includes(searchTerm.toLowerCase()) 
+    return story.title.toLowerCase().includes(searchTerm.toLowerCase())
       || story.author.toLowerCase().includes(searchTerm.toLowerCase())
-    }
+  }
   );
 
   return (
     <div>
       <h1>My Hacker Stories</h1>
-      <Search onSearch={handleSearch} text = {searchTerm}/>
+      <Search onSearch={handleSearch} searchTerm={searchTerm} />
 
       <hr />
 
-      <List list={searchedStories}/>
-      
+      <List list={searchedStories} />
+
     </div>
   );
 }
