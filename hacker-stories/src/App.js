@@ -15,15 +15,6 @@ const List = ({ list, onRemoveItem }) => {
   );
 }
 
-const Search = ({ searchTerm, onSearch }) => (
-  <>
-
-    <p>
-      Searching for <strong>{searchTerm}</strong>.
-    </p>
-  </>
-);
-
 const InputWithLabel = ({
   id,
   label,
@@ -83,8 +74,6 @@ const Item = ({
   );
 }
 
-
-
 const useStorageState = (key, initialState) => {
   const [value, setValue] = React.useState(
     localStorage.getItem(key) || initialState
@@ -115,9 +104,23 @@ const App = () => {
       objectID: 1,
     }
   ];
+  
+  const getAsyncStories = () =>
+    new Promise((resolve) =>
+      setTimeout(
+        () => resolve({ data: { stories: initialStories } }),
+        2000)
+    );
+
+  const [stories, setStories] = React.useState([]);
+
+  React.useEffect(() => {
+    getAsyncStories().then(result => {
+      setStories(result.data.stories);
+    });
+  }, []);
 
   const [searchTerm, setSearchTerm] = useStorageState('search', 'React');
-  const [stories, setStories] = React.useState(initialStories);
 
   console.log('App renders')
 
