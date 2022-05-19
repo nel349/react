@@ -84,6 +84,8 @@ const useStorageState = (key, initialState) => {
   return [value, setValue];
 };
 
+const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
+
 const App = () => {
 
   const initialStories = [
@@ -114,7 +116,7 @@ const App = () => {
 
   const storiesReducer = (state, action) => {
     switch (action.type) {
-case 'STORIES_FETCH_INIT':
+    case 'STORIES_FETCH_INIT':
       return {
         ...state,
         isLoading: true,
@@ -139,7 +141,7 @@ case 'STORIES_FETCH_INIT':
         data: state.data.filter(
           (story) => action.payload.objectID !== story.objectID
         ),
-};
+      };
       default:
         throw new Error();
     }
@@ -152,11 +154,15 @@ case 'STORIES_FETCH_INIT':
   
 
   React.useEffect(() => {
-    getAsyncStories().then(result => {
-      dispatchStories({
-        type: 'STORIES_FETCH_SUCCESS',
-        payload: result.data.stories,
-      });
+    dispatchStories({ type: 'STORIES_FETCH_INIT' });
+    
+    fetch(`${API_ENDPOINT}react`) // B
+      .then((response) => response.json()) // C
+      .then(result => {
+        dispatchStories({
+          type: 'STORIES_FETCH_SUCCESS',
+          payload: result.hits,
+        });
     })
     .catch(() => dispatchStories({ type: 'STORIES_FETCH_FAILURE' }));
   });
